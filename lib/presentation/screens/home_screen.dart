@@ -105,7 +105,6 @@ class HomeScreen extends StatelessWidget {
           image: DecorationImage(
             image: AssetImage(AssetRes.bannerBg),
             fit: .cover,
-            opacity: 0.2,
           ),
         ),
         child: Padding(
@@ -164,8 +163,8 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             spacing: NumberConstant.cardSpacing,
             children: [
-              _buildCourseCategoryCard(context, categories[0]),
-              _buildCourseCategoryCard(context, categories[2]),
+              _buildCourseCategoryCard(context, categories[0], isTall: true),
+              _buildCourseCategoryCard(context, categories[2], isTall: false),
             ],
           ),
         ),
@@ -173,8 +172,8 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             spacing: NumberConstant.cardSpacing,
             children: [
-              _buildCourseCategoryCard(context, categories[1]),
-              _buildCourseCategoryCard(context, categories[3]),
+              _buildCourseCategoryCard(context, categories[1], isTall: false),
+              _buildCourseCategoryCard(context, categories[3], isTall: true),
             ],
           ),
         ),
@@ -182,7 +181,11 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCourseCategoryCard(BuildContext context, CourseCategoryModel category) {
+  Widget _buildCourseCategoryCard(
+    BuildContext context,
+    CourseCategoryModel category, {
+    required bool isTall,
+  }) {
     return GestureDetector(
       onTap: () => context.push(NamedRoutes.courseDetails.routeName),
       child: DecoratedBox(
@@ -197,7 +200,9 @@ class HomeScreen extends StatelessWidget {
           ),
           child: Column(
             crossAxisAlignment: .start,
-            spacing: NumberConstant.contentSpacing,
+            spacing: isTall
+                ? NumberConstant.courseCardSpacingTall
+                : NumberConstant.courseCardSpacingShort,
             children: [
               DecoratedBox(
                 decoration: const BoxDecoration(

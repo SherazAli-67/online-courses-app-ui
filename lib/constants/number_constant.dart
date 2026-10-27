@@ -3,6 +3,8 @@ class NumberConstant {
   static const screenTopPadding = 16.0;
   static const sectionSpacing = 24.0;
   static const contentSpacing = 20.0;
+  static const courseCardSpacingShort = 24.0;
+  static const courseCardSpacingTall = 52.0;
   static const cardSpacing = 16.0;
   static const chipSpacing = 12.0;
   static const itemSpacing = 8.0;
