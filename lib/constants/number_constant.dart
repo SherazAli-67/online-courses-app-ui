@@ -18,4 +18,5 @@ class NumberConstant {
   static const chipPaddingV = 8.0;
   static const navPadding = 20.0;
   static const backButtonPadding = 8.0;
+  static const progressRingStroke = 8.0;
 }
