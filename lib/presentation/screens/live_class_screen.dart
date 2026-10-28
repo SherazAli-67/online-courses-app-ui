@@ -115,16 +115,15 @@ class _LiveClassView extends StatelessWidget {
         image: DecorationImage(
           image: AssetImage(AssetRes.bannerBg),
           fit: .cover,
-          opacity: 0.15,
         ),
       ),
-      child: Padding(
-        padding: .all(NumberConstant.cardPaddingV),
-        child: Row(
-          spacing: NumberConstant.itemSpacing,
-          children: [
-            Expanded(
-              flex: 3,
+      child: Row(
+        spacing: NumberConstant.itemSpacing,
+        children: [
+          Expanded(
+            flex: 3,
+            child: Padding(
+              padding: const .symmetric(horizontal: NumberConstant.cardPaddingH, vertical: NumberConstant.cardPaddingV),
               child: Column(
                 crossAxisAlignment: .start,
                 spacing: NumberConstant.cardSpacing,
@@ -167,12 +166,12 @@ class _LiveClassView extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-              flex: 2,
-              child: Image.asset(liveClass.imagePath, fit: .contain),
-            ),
-          ],
-        ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Image.asset(liveClass.imagePath, fit: .contain),
+          ),
+        ],
       ),
     );
   }
