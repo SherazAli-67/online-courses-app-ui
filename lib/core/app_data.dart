@@ -115,7 +115,7 @@ class AppData {
       total: 100,
       iconPath: AssetRes.icStreakHours,
       iconBackgroundColor: AppColors.secondary03,
-      progressColor: AppColors.secondary01,
+      progressColor: AppColors.stateProgressColor,
     ),
     ActivityStatModel(
       title: StringConst.totalQuizComplete,
@@ -124,7 +124,7 @@ class AppData {
       total: 20,
       iconPath: AssetRes.icQuizCrown,
       iconBackgroundColor: AppColors.secondary04,
-      progressColor: AppColors.secondary01,
+      progressColor: AppColors.stateProgressColor,
     ),
     ActivityStatModel(
       title: StringConst.totalAssignment,
@@ -133,7 +133,7 @@ class AppData {
       total: 20,
       iconPath: AssetRes.icTotalAssignment,
       iconBackgroundColor: AppColors.listeningCardColor,
-      progressColor: AppColors.secondary01,
+      progressColor: AppColors.stateProgressColor,
     ),
   ];
 }

@@ -22,5 +22,8 @@ class NumberConstant {
   static const navPadding = 20.0;
   static const backButtonPadding = 8.0;
   static const progressRingStroke = 8.0;
+  static const activitiesProgressStroke = 10.0;
+  static const activitiesTrackStroke = 4.0;
+  static const activitiesProgressOutset = 10.0;
   static const timelineStroke = 2.0;
 }

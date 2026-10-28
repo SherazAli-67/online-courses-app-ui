@@ -17,4 +17,5 @@ class AppColors {
   static const writingCardColor = Color(0xFFE3E8FF);
   static const avatarBgColor = Color(0xFFFFE3F2);
   static const chipBorderColor = Color(0xFFE0E0E0);
+  static const stateProgressColor = Color(0xff28B9FF);
 }
