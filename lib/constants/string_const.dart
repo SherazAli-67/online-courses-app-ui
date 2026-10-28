@@ -2,7 +2,7 @@ class StringConst {
   static const appTitle = 'Online Courses App';
   static const appFontFamily = 'Satoshi';
 
-  static const greetingName = 'Hi! Rakib';
+  static const greetingName = 'Hi! Sheraz';
   static const greetingSubtitle = 'What do you want to learn?';
   static const continueLesson = 'Continue Lession';
   static const courseList = 'Course List';

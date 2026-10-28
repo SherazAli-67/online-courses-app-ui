@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                     crossAxisAlignment: .start,
                     spacing: NumberConstant.contentSpacing,
                     children: [
-                      Text(StringConst.courseList, style: AppTextStyles.sectionTitle),
+                      //coursesList, sectionTitle
                       _buildCourseGrid(context),
                     ],
                   ),
@@ -59,12 +59,8 @@ class HomeScreen extends StatelessWidget {
           borderRadius: .circular(NumberConstant.avatarRadius),
           child: ColoredBox(
             color: AppColors.avatarBgColor,
-            child: Image.asset(
-              AssetRes.profileAvatar,
-              fit: .cover,
-              width: 58,
-              height: 58,
-            ),
+            //profileAvatar, widthHeight: 58
+            child: const SizedBox()
           ),
         ),
         Expanded(
@@ -75,11 +71,12 @@ class HomeScreen extends StatelessWidget {
               Row(
                 spacing: NumberConstant.tightSpacing,
                 children: [
-                  Flexible(child: Text(StringConst.greetingName, style: AppTextStyles.greeting)),
-                  SvgPicture.asset(AssetRes.icWaveHand),
+                  //greetingName, greeting
+                  Flexible(child: const SizedBox()),
+                  //icWaveHand
                 ],
               ),
-              Text(StringConst.greetingSubtitle, style: AppTextStyles.body),
+              //greetingSubtitle, body
             ],
           ),
         ),
@@ -93,9 +90,9 @@ class HomeScreen extends StatelessWidget {
       onTap: () => context.push(NamedRoutes.courseDetails.routeName),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: AppColors.primaryColor,
-          borderRadius: .circular(NumberConstant.bannerRadius),
-          boxShadow: [
+          // color: AppColors.primaryColor,
+          // borderRadius: .circular(NumberConstant.bannerRadius),
+         /* boxShadow: [
             BoxShadow(
               color: AppColors.blackColor.withValues(alpha: 0.1),
               offset: const Offset(4, 12),
@@ -106,44 +103,46 @@ class HomeScreen extends StatelessWidget {
             image: AssetImage(AssetRes.bannerBg),
             fit: .cover,
           ),
+          */
         ),
         child: Padding(
-          padding: .all(NumberConstant.cardPaddingV),
+          padding: .all(20),
           child: Row(
             spacing: NumberConstant.cardSpacing,
             children: [
               Expanded(
-                child: ProgressRing(
+                child: const SizedBox()
+                /*ProgressRing(
                   progress: course.progress,
                   percentLabel: '${(course.progress * 100).round()}%',
                   trackColor: AppColors.whiteColor.withValues(alpha: 0.35),
-                ),
+                ),*/
               ),
               Expanded(
                 flex: 2,
-                child: Column(
-                  crossAxisAlignment: .start,
-                  spacing: NumberConstant.chipSpacing,
-                  children: [
-                    Column(
-                      crossAxisAlignment: .start,
-                      spacing: NumberConstant.itemSpacing,
-                      children: [
-                        Text(course.title, style: AppTextStyles.bannerTitle),
-                        Text(course.body, style: AppTextStyles.bannerBody),
-                      ],
-                    ),
-                    Row(
-                      spacing: NumberConstant.tightSpacing,
-                      children: [
-                        Text(StringConst.continueLesson, style: AppTextStyles.continueCta),
-                        SvgPicture.asset(
-                          AssetRes.icArrowNext,
-                          colorFilter: .mode(AppColors.whiteColor, .srcIn),
-                        ),
-                      ],
-                    ),
-                  ],
+                child: Padding(
+                  padding: const .only(right: 18.0),
+                  child: Column(
+                    crossAxisAlignment: .start,
+                    spacing: NumberConstant.chipSpacing,
+                    children: [
+                      Column(
+                        crossAxisAlignment: .start,
+                        spacing: NumberConstant.itemSpacing,
+                        children: [
+                          //course.title, bannerTitle,
+                          //course.body, bannerBody
+                        ],
+                      ),
+                      Row(
+                        spacing: NumberConstant.tightSpacing,
+                        children: [
+                          //continueLesson, continueCta,
+                          //icArrowNext
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -190,7 +189,7 @@ class HomeScreen extends StatelessWidget {
       onTap: () => context.push(NamedRoutes.courseDetails.routeName),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: category.backgroundColor,
+          // color: category.backgroundColor,
           borderRadius: .circular(NumberConstant.cardRadius),
         ),
         child: Padding(
@@ -200,11 +199,11 @@ class HomeScreen extends StatelessWidget {
           ),
           child: Column(
             crossAxisAlignment: .start,
-            spacing: isTall
-                ? NumberConstant.courseCardSpacingTall
-                : NumberConstant.courseCardSpacingShort,
+            // spacing: isTall
+            //     ? NumberConstant.courseCardSpacingTall
+            //     : NumberConstant.courseCardSpacingShort,
             children: [
-              DecoratedBox(
+              /*DecoratedBox(
                 decoration: const BoxDecoration(
                   color: AppColors.whiteColor,
                   shape: .circle,
@@ -213,7 +212,7 @@ class HomeScreen extends StatelessWidget {
                   padding: .all(NumberConstant.iconCirclePadding),
                   child: SvgPicture.asset(category.iconPath),
                 ),
-              ),
+              ),*/
               Row(
                 crossAxisAlignment: .end,
                 children: [
@@ -222,18 +221,13 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: .start,
                       spacing: NumberConstant.itemSpacing,
                       children: [
-                        Text(category.title, style: AppTextStyles.cardTitle),
-                        Text(
-                          '${category.lessonCount} ${StringConst.lessonsSuffix}',
-                          style: AppTextStyles.cardSubtitle,
-                        ),
+                        //category.title, cardTitle,
+                        //${category.lessonCount} ${StringConst.lessonsSuffix}, cardSubtitle
                       ],
                     ),
                   ),
-                  SvgPicture.asset(
-                    AssetRes.icArrowNext,
-                    colorFilter: .mode(AppColors.blackColor, .srcIn),
-                  ),
+                  //icArrowNext, black
+
                 ],
               ),
             ],
