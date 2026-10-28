@@ -27,6 +27,7 @@ class StringConst {
 
   static const lessonList = 'Lession List';
   static const weekPrefix = 'Week:';
+  static const hallo = 'Hallo';
 
   static const activities = 'Activities';
   static const totalHoursSpent = 'Total hours spent';

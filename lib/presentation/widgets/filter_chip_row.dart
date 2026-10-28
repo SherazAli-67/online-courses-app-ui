@@ -30,7 +30,7 @@ class FilterChipRow extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: i == selectedIndex ? AppColors.primaryColor : AppColors.whiteColor,
                   borderRadius: .circular(NumberConstant.chipRadius),
-                  border: i == selectedIndex ? null : .all(color: AppColors.chipBorderColor),
+                  // border: i == selectedIndex ? null : .all(color: AppColors.chipBorderColor),
                 ),
                 child: Padding(
                   padding: .symmetric(

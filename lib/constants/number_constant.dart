@@ -11,7 +11,7 @@ class NumberConstant {
   static const tightSpacing = 4.0;
   static const cardRadius = 20.0;
   static const bannerRadius = 24.0;
-  static const chipRadius = 8.0;
+  static const chipRadius = 50.0;
   static const avatarRadius = 16.0;
   static const iconCirclePadding = 11.0;
   static const cardPaddingH = 13.0;
@@ -21,4 +21,5 @@ class NumberConstant {
   static const navPadding = 20.0;
   static const backButtonPadding = 8.0;
   static const progressRingStroke = 8.0;
+  static const timelineStroke = 2.0;
 }
