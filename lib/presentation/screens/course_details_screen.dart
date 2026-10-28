@@ -9,7 +9,9 @@ import 'package:online_course_app_ui/core/asset_res.dart';
 import 'package:online_course_app_ui/core/models/lesson_model.dart';
 import 'package:online_course_app_ui/presentation/widgets/app_back_button.dart';
 import 'package:online_course_app_ui/presentation/widgets/filter_chip_row.dart';
+import 'package:online_course_app_ui/presentation/widgets/press_scale.dart';
 import 'package:online_course_app_ui/presentation/widgets/progress_ring.dart';
+import 'package:online_course_app_ui/presentation/widgets/staggered_fade_slide.dart';
 import 'package:provider/provider.dart';
 
 class CourseWeekProvider extends ChangeNotifier {
@@ -66,26 +68,61 @@ class _CourseDetailsView extends StatelessWidget {
             child: Column(
               spacing: NumberConstant.contentSpacing,
               children: [
-                _buildHeader(),
+                StaggeredFadeSlide(
+                  index: 0,
+                  child: _buildHeader(),
+                ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: .start,
                     spacing: NumberConstant.contentSpacing,
                     children: [
-                      Expanded(child: _buildHeroWithProgress()),
-                      FilterChipRow(
-                        labels: AppData.courseWeeks,
-                        selectedIndex: weekProvider.selectedIndex,
-                        onSelected: (index) => context.read<CourseWeekProvider>().select(index),
+                      Expanded(
+                        child: StaggeredFadeSlide(
+                          index: 1,
+                          child: _buildHeroWithProgress(),
+                        ),
+                      ),
+                      StaggeredFadeSlide(
+                        index: 2,
+                        child: FilterChipRow(
+                          labels: AppData.courseWeeks,
+                          selectedIndex: weekProvider.selectedIndex,
+                          onSelected: (index) =>
+                              context.read<CourseWeekProvider>().select(index),
+                        ),
                       ),
                       Expanded(
                         child: SingleChildScrollView(
-                          child: Column(
-                            spacing: NumberConstant.sectionSpacing,
-                            children: [
-                              _buildLessonListHeader(),
-                              _buildLessonTimeline(),
-                            ],
+                          child: AnimatedSwitcher(
+                            duration: const Duration(
+                              milliseconds: NumberConstant.animNormalMs,
+                            ),
+                            switchInCurve: Curves.easeOutCubic,
+                            switchOutCurve: Curves.easeInCubic,
+                            transitionBuilder: (child, animation) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: SlideTransition(
+                                  position: Tween<Offset>(
+                                    begin: const Offset(0, 0.04),
+                                    end: Offset.zero,
+                                  ).animate(animation),
+                                  child: child,
+                                ),
+                              );
+                            },
+                            child: Column(
+                              key: ValueKey(weekProvider.selectedIndex),
+                              spacing: NumberConstant.sectionSpacing,
+                              children: [
+                                StaggeredFadeSlide(
+                                  index: 0,
+                                  child: _buildLessonListHeader(),
+                                ),
+                                _buildLessonTimeline(),
+                              ],
+                            ),
                           ),
                         ),
                       )
@@ -122,20 +159,36 @@ class _CourseDetailsView extends StatelessWidget {
           child: Stack(
             alignment: .center,
             children: [
-              Image.asset(AssetRes.englishDailyLifeAvatar,),
+              TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0.92, end: 1),
+                duration: const Duration(milliseconds: NumberConstant.animNormalMs),
+                curve: Curves.easeOutCubic,
+                builder: (context, value, child) {
+                  return Transform.scale(scale: value, child: child);
+                },
+                child: Image.asset(AssetRes.englishDailyLifeAvatar),
+              ),
               Align(
                 alignment: const Alignment(-0.75, -0.35),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: AppColors.secondary03,
-                    borderRadius: .circular(NumberConstant.chipRadius),
-                  ),
-                  child: Padding(
-                    padding: .symmetric(
-                      horizontal: NumberConstant.chipPaddingH,
-                      vertical: NumberConstant.chipPaddingV,
+                child: TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0.8, end: 1),
+                  duration: const Duration(milliseconds: NumberConstant.animNormalMs),
+                  curve: Curves.easeOutBack,
+                  builder: (context, value, child) {
+                    return Transform.scale(scale: value, child: child);
+                  },
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: AppColors.secondary03,
+                      borderRadius: .circular(NumberConstant.chipRadius),
                     ),
-                    child: Text(StringConst.hallo, style: AppTextStyles.scheduleLabel),
+                    child: Padding(
+                      padding: .symmetric(
+                        horizontal: NumberConstant.chipPaddingH,
+                        vertical: NumberConstant.chipPaddingV,
+                      ),
+                      child: Text(StringConst.hallo, style: AppTextStyles.scheduleLabel),
+                    ),
                   ),
                 ),
               ),
@@ -219,8 +272,15 @@ class _CourseDetailsView extends StatelessWidget {
     return Column(
       children: [
         for (var i = 0; i < lessons.length; i++) ...[
-          _buildLessonRow(lesson: lessons[i], index: i),
-          if (i < lessons.length - 1) _buildTimelineGap(afterIndex: i),
+          StaggeredFadeSlide(
+            index: 1 + i,
+            child: _buildLessonRow(lesson: lessons[i], index: i),
+          ),
+          if (i < lessons.length - 1)
+            StaggeredFadeSlide(
+              index: 1 + i,
+              child: _buildTimelineGap(afterIndex: i),
+            ),
         ],
       ],
     );
@@ -240,17 +300,25 @@ class _CourseDetailsView extends StatelessWidget {
   }
 
   Widget _buildTimelineDot({required bool isCompleted}) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: isCompleted ? AppColors.primaryColor : AppColors.navInactiveColor,
-        shape: .circle,
-      ),
-      child: Padding(
-        padding: .all(NumberConstant.itemSpacing),
-        child: Icon(
-          isCompleted ? Icons.check_rounded : Icons.remove_rounded,
-          color: AppColors.whiteColor,
-          size: 12,
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0.6, end: 1),
+      duration: const Duration(milliseconds: NumberConstant.animFastMs),
+      curve: Curves.easeOutBack,
+      builder: (context, value, child) {
+        return Transform.scale(scale: value, child: child);
+      },
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: isCompleted ? AppColors.primaryColor : AppColors.navInactiveColor,
+          shape: .circle,
+        ),
+        child: Padding(
+          padding: .all(NumberConstant.itemSpacing),
+          child: Icon(
+            isCompleted ? Icons.check_rounded : Icons.remove_rounded,
+            color: AppColors.whiteColor,
+            size: 12,
+          ),
         ),
       ),
     );
@@ -316,47 +384,49 @@ class _CourseDetailsView extends StatelessWidget {
     final isPrimaryPlay = index.isOdd;
     final playBg = isPrimaryPlay ? AppColors.primaryColor : AppColors.secondary01;
     final playIconColor = isPrimaryPlay ? AppColors.whiteColor : AppColors.primaryColor;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppColors.whiteColor,
-        borderRadius: .circular(NumberConstant.cardRadius),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.blackColor.withValues(alpha: 0.06),
-            offset: const Offset(0, 4),
-            blurRadius: 16,
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: .all(NumberConstant.chipSpacing),
-        child: Row(
-          spacing: NumberConstant.chipSpacing,
-          children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: playBg,
-                shape: .circle,
-              ),
-              child: Padding(
-                padding: .all(NumberConstant.itemSpacing + NumberConstant.tightSpacing),
-                child: Icon(
-                  Icons.play_arrow_rounded,
-                  color: playIconColor,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: .start,
-                spacing: NumberConstant.tightSpacing,
-                children: [
-                  Text(lesson.title, style: AppTextStyles.lessonTitle),
-                  Text(lesson.subtitle, style: AppTextStyles.lessonMeta),
-                ],
-              ),
+    return PressScale(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: AppColors.whiteColor,
+          borderRadius: .circular(NumberConstant.cardRadius),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.blackColor.withValues(alpha: 0.06),
+              offset: const Offset(0, 4),
+              blurRadius: 16,
             ),
           ],
+        ),
+        child: Padding(
+          padding: .all(NumberConstant.chipSpacing),
+          child: Row(
+            spacing: NumberConstant.chipSpacing,
+            children: [
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: playBg,
+                  shape: .circle,
+                ),
+                child: Padding(
+                  padding: .all(NumberConstant.itemSpacing + NumberConstant.tightSpacing),
+                  child: Icon(
+                    Icons.play_arrow_rounded,
+                    color: playIconColor,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: .start,
+                  spacing: NumberConstant.tightSpacing,
+                  children: [
+                    Text(lesson.title, style: AppTextStyles.lessonTitle),
+                    Text(lesson.subtitle, style: AppTextStyles.lessonMeta),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

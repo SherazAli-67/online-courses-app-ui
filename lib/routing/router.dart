@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:online_course_app_ui/constants/number_constant.dart';
 import 'package:online_course_app_ui/presentation/screens/activities_screen.dart';
 import 'package:online_course_app_ui/presentation/screens/course_details_screen.dart';
 import 'package:online_course_app_ui/presentation/screens/explore_screen.dart';
@@ -48,7 +50,27 @@ GoRouter router = GoRouter(
     ),
     GoRoute(
       path: NamedRoutes.courseDetails.routeName,
-      builder: (context, state) => const CourseDetailsScreen(),
+      pageBuilder: (context, state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: const CourseDetailsScreen(),
+        transitionDuration: const Duration(milliseconds: NumberConstant.animNormalMs),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final curved = CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOutCubic,
+          );
+          return FadeTransition(
+            opacity: curved,
+            child: SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0, 0.04),
+                end: Offset.zero,
+              ).animate(curved),
+              child: child,
+            ),
+          );
+        },
+      ),
     ),
   ],
 );
