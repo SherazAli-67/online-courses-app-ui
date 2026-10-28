@@ -15,6 +15,8 @@ class ProgressRing extends StatelessWidget {
   final double? trackStrokeWidth;
   final double progressOutset;
   final Widget? center;
+  final bool animate;
+  final Duration animationDuration;
 
   const ProgressRing({
     super.key,
@@ -27,16 +29,51 @@ class ProgressRing extends StatelessWidget {
     this.trackStrokeWidth,
     this.progressOutset = 0,
     this.center,
+    this.animate = true,
+    this.animationDuration =
+        const Duration(milliseconds: NumberConstant.animNormalMs),
   });
 
   @override
   Widget build(BuildContext context) {
     final progressStroke = strokeWidth ?? NumberConstant.progressRingStroke;
+    final target = progress.clamp(0.0, 1.0);
+
+    if (!animate) {
+      return _buildRing(
+        animatedProgress: target,
+        label: percentLabel,
+        progressStroke: progressStroke,
+      );
+    }
+
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: target),
+      duration: animationDuration,
+      curve: Curves.easeOutCubic,
+      builder: (context, value, child) {
+        final label = center == null
+            ? '${(value * 100).round()}%'
+            : percentLabel;
+        return _buildRing(
+          animatedProgress: value,
+          label: label,
+          progressStroke: progressStroke,
+        );
+      },
+    );
+  }
+
+  Widget _buildRing({
+    required double animatedProgress,
+    required String label,
+    required double progressStroke,
+  }) {
     return AspectRatio(
       aspectRatio: 1,
       child: CustomPaint(
         painter: _ProgressRingPainter(
-          progress: progress.clamp(0, 1),
+          progress: animatedProgress,
           progressColor: progressColor,
           trackColor: trackColor,
           strokeWidth: progressStroke,
@@ -44,7 +81,7 @@ class ProgressRing extends StatelessWidget {
           progressOutset: progressOutset,
         ),
         child: Center(
-          child: center ?? Text(percentLabel, style: style),
+          child: center ?? Text(label, style: style),
         ),
       ),
     );

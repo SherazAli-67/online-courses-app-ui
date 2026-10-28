@@ -26,4 +26,9 @@ class NumberConstant {
   static const activitiesTrackStroke = 4.0;
   static const activitiesProgressOutset = 10.0;
   static const timelineStroke = 2.0;
+  static const animFastMs = 200;
+  static const animNormalMs = 900;
+  static const animStaggerGapMs = 70;
+  static const animSlideOffset = 16.0;
+  static const pressScale = 0.97;
 }
