@@ -116,7 +116,7 @@ class HomeScreen extends StatelessWidget {
                 child: ProgressRing(
                   progress: course.progress,
                   percentLabel: '${(course.progress * 100).round()}%',
-                  trackColor: AppColors.whiteColor,
+                  trackColor: AppColors.whiteColor.withValues(alpha: 0.35),
                 ),
               ),
               Expanded(

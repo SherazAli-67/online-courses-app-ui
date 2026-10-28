@@ -47,14 +47,14 @@ class _CourseDetailsView extends StatelessWidget {
         decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                  Color(0xffE8F7FF),
-                  Color(0xffFAFAFF),
+                  AppColors.secondary03,
+                  AppColors.scaffoldBgColor,
+                AppColors.whiteColor
                 ],
               begin: .topRight,
               end: .topLeft
             )
         ),
-
         child: SafeArea(
           child: Padding(
             padding: .fromLTRB(
@@ -176,7 +176,7 @@ class _CourseDetailsView extends StatelessWidget {
               child: ProgressRing(
                 progress: course.progress,
                 percentLabel: '${(course.progress * 100).round()}%',
-                trackColor: AppColors.whiteColor,
+                trackColor: AppColors.whiteColor.withValues(alpha: 0.35),
               ),
             ),
             Expanded(

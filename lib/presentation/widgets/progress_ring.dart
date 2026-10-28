@@ -11,6 +11,8 @@ class ProgressRing extends StatelessWidget {
   final TextStyle style;
   final Color progressColor;
   final Color trackColor;
+  final double? strokeWidth;
+  final Widget? center;
 
   const ProgressRing({
     super.key,
@@ -19,6 +21,8 @@ class ProgressRing extends StatelessWidget {
     this.style = AppTextStyles.progressPercent,
     this.progressColor = AppColors.whiteColor,
     this.trackColor = AppColors.secondary01,
+    this.strokeWidth,
+    this.center,
   });
 
   @override
@@ -30,10 +34,10 @@ class ProgressRing extends StatelessWidget {
           progress: progress.clamp(0, 1),
           progressColor: progressColor,
           trackColor: trackColor,
-          strokeWidth: NumberConstant.progressRingStroke,
+          strokeWidth: strokeWidth ?? NumberConstant.progressRingStroke,
         ),
         child: Center(
-          child: Text(percentLabel, style: style),
+          child: center ?? Text(percentLabel, style: style),
         ),
       ),
     );
@@ -58,7 +62,7 @@ class _ProgressRingPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = (math.min(size.width, size.height) - strokeWidth) / 2;
     final trackPaint = Paint()
-      ..color = trackColor.withValues(alpha: 0.35)
+      ..color = trackColor
       ..style = .stroke
       ..strokeWidth = strokeWidth / 2
       ..strokeCap = .round;

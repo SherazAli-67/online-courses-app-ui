@@ -10,6 +10,7 @@ class NumberConstant {
   static const itemSpacing = 8.0;
   static const tightSpacing = 4.0;
   static const cardRadius = 20.0;
+  static const activityCardRadius = 10.0;
   static const bannerRadius = 24.0;
   static const chipRadius = 50.0;
   static const avatarRadius = 16.0;
