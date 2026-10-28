@@ -23,28 +23,73 @@ class FilterChipRow extends StatelessWidget {
         spacing: NumberConstant.chipSpacing,
         children: [
           for (var i = 0; i < labels.length; i++)
-            GestureDetector(
+            _AnimatedFilterChip(
+              label: labels[i],
+              selected: i == selectedIndex,
               onTap: () => onSelected(i),
-              behavior: .opaque,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: i == selectedIndex ? AppColors.primaryColor : AppColors.whiteColor,
-                  borderRadius: .circular(NumberConstant.chipRadius),
-                  // border: i == selectedIndex ? null : .all(color: AppColors.chipBorderColor),
-                ),
-                child: Padding(
-                  padding: .symmetric(
-                    horizontal: NumberConstant.chipPaddingH,
-                    vertical: NumberConstant.chipPaddingV,
-                  ),
-                  child: Text(
-                    labels[i],
-                    style: i == selectedIndex ? AppTextStyles.chipLabelActive : AppTextStyles.chipLabel,
-                  ),
-                ),
-              ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+class _AnimatedFilterChip extends StatefulWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _AnimatedFilterChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  State<_AnimatedFilterChip> createState() => _AnimatedFilterChipState();
+}
+
+class _AnimatedFilterChipState extends State<_AnimatedFilterChip> {
+  bool _pressed = false;
+
+  void _setPressed(bool value) {
+    if (_pressed == value) return;
+    setState(() => _pressed = value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    const duration = Duration(milliseconds: NumberConstant.animFastMs);
+    return GestureDetector(
+      onTap: widget.onTap,
+      onTapDown: (_) => _setPressed(true),
+      onTapUp: (_) => _setPressed(false),
+      onTapCancel: () => _setPressed(false),
+      behavior: .opaque,
+      child: AnimatedScale(
+        scale: _pressed ? NumberConstant.pressScale : 1,
+        duration: duration,
+        curve: Curves.easeOutCubic,
+        child: AnimatedContainer(
+          duration: duration,
+          curve: Curves.easeOutCubic,
+          decoration: BoxDecoration(
+            color: widget.selected ? AppColors.primaryColor : AppColors.whiteColor,
+            borderRadius: .circular(NumberConstant.chipRadius),
+          ),
+          padding: .symmetric(
+            horizontal: NumberConstant.chipPaddingH,
+            vertical: NumberConstant.chipPaddingV,
+          ),
+          child: AnimatedDefaultTextStyle(
+            duration: duration,
+            curve: Curves.easeOutCubic,
+            style: widget.selected
+                ? AppTextStyles.chipLabelActive
+                : AppTextStyles.chipLabel,
+            child: Text(widget.label),
+          ),
+        ),
       ),
     );
   }
