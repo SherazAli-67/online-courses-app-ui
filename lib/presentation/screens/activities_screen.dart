@@ -10,6 +10,7 @@ import 'package:online_course_app_ui/core/asset_res.dart';
 import 'package:online_course_app_ui/core/models/activity_stat_model.dart';
 import 'package:online_course_app_ui/presentation/widgets/app_back_button.dart';
 import 'package:online_course_app_ui/presentation/widgets/progress_ring.dart';
+import 'package:online_course_app_ui/presentation/widgets/staggered_fade_slide.dart';
 import 'package:online_course_app_ui/routing/router.dart';
 
 class ActivitiesScreen extends StatelessWidget {
@@ -40,7 +41,10 @@ class ActivitiesScreen extends StatelessWidget {
             child: Column(
               spacing: NumberConstant.sectionSpacing,
               children: [
-                _buildHeader(context),
+                StaggeredFadeSlide(
+                  index: 0,
+                  child: _buildHeader(context),
+                ),
                 Expanded(
                   child: ListView(
                     padding: .only(bottom: NumberConstant.navPadding),
@@ -48,12 +52,22 @@ class ActivitiesScreen extends StatelessWidget {
                       Column(
                         spacing: NumberConstant.contentSpacing,
                         children: [
-                          _buildStreakRing(),
-                          _buildHoursBanner(),
+                          StaggeredFadeSlide(
+                            index: 1,
+                            child: _buildStreakRing(),
+                          ),
+                          StaggeredFadeSlide(
+                            index: 2,
+                            child: _buildHoursBanner(),
+                          ),
                           Column(
                             spacing: NumberConstant.cardSpacing,
                             children: [
-                              for (final stat in AppData.activityStats) _buildStatCard(stat),
+                              for (var i = 0; i < AppData.activityStats.length; i++)
+                                StaggeredFadeSlide(
+                                  index: 3 + i,
+                                  child: _buildStatCard(AppData.activityStats[i]),
+                                ),
                             ],
                           ),
                         ],
@@ -83,7 +97,7 @@ class ActivitiesScreen extends StatelessWidget {
   }
 
   Widget _buildStreakRing() {
-    final percentLabel = '${(AppData.activityProgress * 100).round()}%';
+    final targetProgress = AppData.activityProgress;
     return Align(
       child: FractionallySizedBox(
         widthFactor: 0.7,
@@ -104,21 +118,31 @@ class ActivitiesScreen extends StatelessWidget {
             child: Padding(
               padding: .all(NumberConstant.cardPaddingV),
               child: ProgressRing(
-                progress: AppData.activityProgress,
-                percentLabel: percentLabel,
+                progress: targetProgress,
+                percentLabel: '${(targetProgress * 100).round()}%',
                 progressColor: AppColors.primaryColor,
                 trackColor: AppColors.secondary04,
                 strokeWidth: NumberConstant.activitiesProgressStroke,
                 trackStrokeWidth: NumberConstant.activitiesTrackStroke,
                 progressOutset: NumberConstant.activitiesProgressOutset,
-                center: Column(
-                  mainAxisSize: .min,
-                  spacing: NumberConstant.tightSpacing,
-                  children: [
-                    SvgPicture.asset(AssetRes.icStreakHours),
-                    Text(percentLabel, style: AppTextStyles.activityPercent),
-                    Text(AppData.activityStreakTime, style: AppTextStyles.activityTime),
-                  ],
+                center: TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0, end: targetProgress),
+                  duration: const Duration(milliseconds: NumberConstant.animNormalMs),
+                  curve: Curves.easeOutCubic,
+                  builder: (context, value, child) {
+                    return Column(
+                      mainAxisSize: .min,
+                      spacing: NumberConstant.tightSpacing,
+                      children: [
+                        SvgPicture.asset(AssetRes.icStreakHours),
+                        Text(
+                          '${(value * 100).round()}%',
+                          style: AppTextStyles.activityPercent,
+                        ),
+                        Text(AppData.activityStreakTime, style: AppTextStyles.activityTime),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
@@ -198,11 +222,18 @@ class ActivitiesScreen extends StatelessWidget {
                       Expanded(
                         child: ClipRRect(
                           borderRadius: .circular(NumberConstant.cardRadius),
-                          child: LinearProgressIndicator(
-                            value: progress,
-                            minHeight: NumberConstant.timelineStroke * 3.5,
-                            backgroundColor: AppColors.chipBorderColor,
-                            color: stat.progressColor,
+                          child: TweenAnimationBuilder<double>(
+                            tween: Tween(begin: 0, end: progress),
+                            duration: const Duration(milliseconds: NumberConstant.animNormalMs),
+                            curve: Curves.easeOutCubic,
+                            builder: (context, value, child) {
+                              return LinearProgressIndicator(
+                                value: value,
+                                minHeight: NumberConstant.timelineStroke * 3.5,
+                                backgroundColor: AppColors.chipBorderColor,
+                                color: stat.progressColor,
+                              );
+                            },
                           ),
                         ),
                       ),
